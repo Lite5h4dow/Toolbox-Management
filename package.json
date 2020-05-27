@@ -8,7 +8,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "bcrypt": "^4.0.1",
     "dotenv": "^8.2.0",
+    "moment": "^2.26.0",
     "mongodb": "^3.5.7",
     "next": "9.3.6",
     "react": "16.13.1",
@@ -18,9 +21,11 @@
     "unfetch": "^4.1.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/mongodb": "^3.5.14",
     "@types/node": "^13.13.4",
     "@types/react": "^16.9.34",
+    "@types/semantic-ui": "^2.2.7",
     "typescript": "^3.8.3"
   }
 }

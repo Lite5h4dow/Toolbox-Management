@@ -11,7 +11,7 @@ const withMongo = (handler) => async (
     await mongo.connect();
     const db = mongo.db(process.env.mongodb_name);
 
-    console.info("Mongo Connection Cpen");
+    console.info("Mongo Connection Open");
     await handler(req, res, db);
   } catch (err) {
     console.error(err);

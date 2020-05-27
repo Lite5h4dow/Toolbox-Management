@@ -6,7 +6,7 @@ interface LayoutProps {
   activeItem: string;
 }
 
-class FrontLayout extends Component<LayoutProps> {
+class FrontLayout extends Component<LayoutProps, {}> {
   constructor(props) {
     super(props);
   }
@@ -47,7 +47,7 @@ class FrontLayout extends Component<LayoutProps> {
                   Login
                 </Menu.Item>
                 <Menu.Item
-                  onclick={() => {
+                  onClick={() => {
                     this.handleClick("/register");
                   }}
                   active={this.props.activeItem == "register"}

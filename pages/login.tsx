@@ -1,23 +1,41 @@
-import { Component } from "react";
+import { Component, SyntheticEvent } from "react";
 import FrontLayout from "../components/frontLayout";
-import { Segment, Form } from "semantic-ui-react";
+import { Segment, Form, Button, Header } from "semantic-ui-react";
+import axios from "axios"
+import router from "next/router"
 
 class Login extends Component<{}> {
   constructor(props) {
     super(props);
+    this.userLogin = this.userLogin.bind(this)
   }
 
   componentDidMount() {
     console.log(localStorage.getItem("sessionID"));
   }
 
+  userLogin(e: React.FormEvent<HTMLFormElement>) {
+    var form = new FormData(e.currentTarget)
+
+    axios.post("/api/login", {
+      uname: form.get("uname"),
+      pword: form.get("pword")
+    }).then((response) => {
+      console.log(response)
+    })
+
+
+  }
+
   render() {
     return (
       <FrontLayout activeItem="login">
+        <Header content="Login" />
         <Segment>
-          <Form>
-            <Form.Field control="input" required label="Username" />
+          <Form onSubmit={this.userLogin}>
+            <Form.Field name="uname" control="input" required label="Username" />
             <Form.Field
+              name="pword"
               control="input"
               required
               type="password"
@@ -25,12 +43,8 @@ class Login extends Component<{}> {
               Password
             />
             <Form.Group>
-              <Form.Field control={"Button"} content="Login" type="submit" />
-              <Form.Field
-                name="rememberMe"
-                control="Checkbox"
-                label="Remember Me"
-              />
+              <Form.Button content="Submit" />
+              <Form.Checkbox name="remember" label="Remember Me" />
             </Form.Group>
           </Form>
         </Segment>
