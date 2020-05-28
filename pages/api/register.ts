@@ -1,7 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { Db } from "mongodb";
 import bcrypt from "bcrypt"
-import newSession from "../../lib/newSession"
+import newSession from "../../lib/Server/newSession"
 import withMongo from "../../middleware/withMongo";
 import { isNullOrUndefined } from "util";
 

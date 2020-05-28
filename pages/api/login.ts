@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Db } from "mongodb";
 import withMongo from "../../middleware/withMongo";
 import bcrypt from "bcrypt"
-import newSession from "../../lib/newSession"
+import newSession from "../../lib/Server/newSession"
 
 const handler = async (req: NextApiRequest, res: NextApiResponse, db: Db) => {
  console.log(req.body)

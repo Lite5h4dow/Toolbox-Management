@@ -3,6 +3,7 @@ import FrontLayout from "../components/frontLayout";
 import { Segment, Form, Button, Header } from "semantic-ui-react";
 import axios from "axios"
 import router from "next/router"
+import { isNullOrUndefined } from "util";
 
 class Login extends Component<{}> {
   constructor(props) {
@@ -21,7 +22,12 @@ class Login extends Component<{}> {
       uname: form.get("uname"),
       pword: form.get("pword")
     }).then((response) => {
-      console.log(response)
+      window.localStorage.setItem
+
+      if (form.get("remember")) {
+        window.localStorage.setItem("uname", form.get("uname").toString())
+      }
+      router.push("/[user]", `/${response.data.userID}`)
     })
 
 
@@ -44,7 +50,7 @@ class Login extends Component<{}> {
             />
             <Form.Group>
               <Form.Button content="Submit" />
-              <Form.Checkbox name="remember" label="Remember Me" />
+              {/*<Form.Checkbox name="remember" label="Remember Me" />*/}
             </Form.Group>
           </Form>
         </Segment>

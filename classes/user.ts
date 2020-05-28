@@ -3,5 +3,4 @@ export enum types {
  Cleaner,
  Company,
  Landlord,
-
 }
