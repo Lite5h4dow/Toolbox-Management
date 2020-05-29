@@ -1,70 +1,91 @@
-import { Component } from "react";
+import React, { useState } from "react";
 import { Sidebar, Menu, Item, Segment, Container } from "semantic-ui-react";
 import { followLink } from "../lib/client/validatedRedirect"
+import hasPermission from "../lib/client/hasPermission"
+import router from "next/router"
+import Axios from "axios";
 
-interface LayoutState {
- MenuVisable: boolean
-}
+const Layout = (props) => {
 
-interface LayoutProps {
- activeItem: string
-}
+ const [MenuVisable, setMenuVisable] = useState(false)
 
-class Layout extends Component<LayoutProps, LayoutState> {
- constructor(props) {
-  super(props)
-  this.state = { MenuVisable: false }
-  this.toggleMenuState = this.toggleMenuState.bind(this)
+ const toggleMenuState = () => {
+  setMenuVisable(!MenuVisable)
  }
 
- toggleMenuState(currentState: boolean) {
-  this.setState({ MenuVisable: !currentState })
+ const handleLogOut = () => {
+  Axios({
+   url: "/api/logOut",
+   method: "post",
+   data: {
+    userID: window.localStorage.getItem("userID"),
+    sessionID: window.localStorage.getItem("sessionID")
+   }
+  }).then(res => {
+   if (res.data.success) {
+    window.localStorage.removeItem("userID")
+    window.localStorage.removeItem("sessionID")
+    window.localStorage.removeItem("userType")
+    router.push("/")
+   }
+  })
  }
 
 
 
- render() {
-  return (
-   <>
-    <Sidebar.Pushable as="Segment">
-     <Sidebar
-      as={Menu}
-      inverted
-      vertical
-      animation="push"
-      direction="left"
-      width="thin"
-      visible={this.state.MenuVisable}
-      onHide={() => { this.toggleMenuState(this.state.MenuVisable) }}
-     >
-      <Menu.Item
-       as="a"
-       icon="columns"
-       active={this.props.activeItem == "bashboard"}
-       content="Dashboard"
-       onClick={() => {
-        followLink(`/[user]`, `/${window.localStorage.getItem("userID")}`)
-       }}
-      />
+ return (
+  <>
+   <Sidebar.Pushable>
+    <Sidebar
+     as={Menu}
+     inverted
+     vertical
+     animation="push"
+     direction="left"
+     width="thin"
+     visible={MenuVisable}
+     onHide={() => { toggleMenuState() }}
+    >
+     <Menu.Item
+      as="a"
+      icon="columns"
+      active={props.activeItem == "dashboard"}
+      content="Dashboard"
+      color="orange"
+      onClick={() => {
+       followLink(`/[user]`, `/${window.localStorage.getItem("userID")}`)
+      }}
+     />
 
-     </Sidebar>
-     <Sidebar.Pusher dimmed={this.state.MenuVisable}>
-      <Segment basic inverted>
-       <Container>
-        <Menu inverted>
-         <Menu.Item color="orange" icon="bars" onClick={() => { this.toggleMenuState(this.state.MenuVisable) }} />
-         <Menu.Menu position="right">
-          <Menu.Item color="orange" icon="sign-out" />
-         </Menu.Menu>
-        </Menu>
-       </Container>
-      </Segment>
-      {this.props.children}
-     </Sidebar.Pusher>
-    </Sidebar.Pushable>
-   </>
-  )
- }
+     <Menu.Item
+      as="a"
+      icon="building outline"
+      active={props.activeItem == "properties"}
+      content="Properties"
+      color="orange"
+      onClick={() => {
+       followLink(`/[user]/properties`, `/${window.localStorage.getItem("userID")}/properties`)
+      }}
+     />
+
+    </Sidebar>
+    <Sidebar.Pusher dimmed={MenuVisable}>
+     <Segment basic inverted>
+      <Container>
+       <Menu secondary inverted>
+        <Menu.Item color="orange" icon="bars" onClick={() => { toggleMenuState() }} />
+        <Menu.Menu position="right">
+         <Menu.Item color="orange" icon="sign-out" onClick={() => { handleLogOut() }} />
+        </Menu.Menu>
+       </Menu>
+      </Container>
+     </Segment>
+     {props.children}
+    </Sidebar.Pusher>
+   </Sidebar.Pushable>
+  </>
+ )
 }
+
 
 export default Layout

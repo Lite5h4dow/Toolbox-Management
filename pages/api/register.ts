@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, db: Db) => {
 
   const sessionID = await newSession(db, user.ops[0]._id)
 
-  res.status(201).json({ userID: user.ops[0]._id, sessionID: sessionID })
+  res.status(201).json({ userID: user.ops[0]._id, sessionID: sessionID, userType: user.ops[0].role })
 
   console.log({ user: user.ops[0]._id, session: sessionID })
  } else {

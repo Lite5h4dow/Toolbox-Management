@@ -1,67 +1,58 @@
-import { Component } from "react";
+import React, { useState } from "react";
 import { Segment, Menu, Container } from "semantic-ui-react";
 import Router from "next/router";
 
-interface LayoutProps {
-  activeItem: string;
-}
+const FrontLayout = (props) => {
 
-class FrontLayout extends Component<LayoutProps, {}> {
-  constructor(props) {
-    super(props);
-  }
-
-  handleClick = (page: any) => {
+  const handleClick = (page: any) => {
     Router.push(page);
   };
 
-  render() {
-    return (
-      <>
-        <Segment basic inverted attached="bottom">
-          <Container>
-            <Menu inverted secondary pointing>
+  return (
+    <>
+      <Segment basic inverted attached="bottom">
+        <Container>
+          <Menu inverted secondary pointing>
+            <Menu.Item
+              onClick={() => {
+                handleClick("/");
+              }}
+              active={props.activeItem == "home"}
+            >
+              Home
+              </Menu.Item>
+            <Menu.Item
+              onClick={() => {
+                handleClick("/about");
+              }}
+              active={props.activeItem == "about"}
+            >
+              About
+              </Menu.Item>
+            <Menu.Menu position="right">
               <Menu.Item
                 onClick={() => {
-                  this.handleClick("/");
+                  handleClick("/login");
                 }}
-                active={this.props.activeItem == "home"}
+                active={props.activeItem == "login"}
               >
-                Home
-              </Menu.Item>
+                Login
+                </Menu.Item>
               <Menu.Item
                 onClick={() => {
-                  this.handleClick("/about");
+                  handleClick("/register");
                 }}
-                active={this.props.activeItem == "about"}
+                active={props.activeItem == "register"}
               >
-                About
-              </Menu.Item>
-              <Menu.Menu position="right">
-                <Menu.Item
-                  onClick={() => {
-                    this.handleClick("/login");
-                  }}
-                  active={this.props.activeItem == "login"}
-                >
-                  Login
+                Register
                 </Menu.Item>
-                <Menu.Item
-                  onClick={() => {
-                    this.handleClick("/register");
-                  }}
-                  active={this.props.activeItem == "register"}
-                >
-                  Register
-                </Menu.Item>
-              </Menu.Menu>
-            </Menu>
-          </Container>
-        </Segment>
-        <Container>{this.props.children}</Container>
-      </>
-    );
-  }
+            </Menu.Menu>
+          </Menu>
+        </Container>
+      </Segment>
+      <Container>{props.children}</Container>
+    </>
+  );
 }
 
 export default FrontLayout;

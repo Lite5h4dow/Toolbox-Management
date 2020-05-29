@@ -1,22 +1,14 @@
-import { Component } from "react";
+import React, { useState } from "react";
 import Layout from "../../components/mainLayout"
 import { Segment } from "semantic-ui-react";
 
-class dashboard extends Component {
- constructor(props) {
-  super(props)
- }
+const dashboard = (props) => {
 
- componentWillMount() {
-
- }
-
- render() {
-  return (
-   <Layout activeItem="dashboard">
-    <Segment placeholder />
-   </Layout>
-  )
- }
+ return (
+  <Layout activeItem="dashboard">
+   <Segment placeholder />
+  </Layout>
+ )
 }
+
 export default dashboard

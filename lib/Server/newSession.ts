@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Db } from "mongodb";
+import { Db, ObjectID } from "mongodb";
 import moment from "moment";
 
 const handler = async (db: Db, userID: string) => {
- const session = await db.collection('UserSessions').insertOne({ userID: userID, sessionCreated: moment.utc() })
+ await db.collection("UserSessions").deleteMany({ userID: new ObjectID(userID) })
+ const session = await db.collection('UserSessions').insertOne({ userID: new ObjectID(userID), sessionCreated: moment.utc() })
 
  return session.ops[0]._id
 }

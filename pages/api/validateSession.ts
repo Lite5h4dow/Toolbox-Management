@@ -7,19 +7,19 @@ import { isNullOrUndefined } from "util";
 const handler = async (req: NextApiRequest, res: NextApiResponse, db: Db) => {
  const id = req.body.id
 
- const session = await db.collection("UserSessions").findOne({ _id: id })
-
- const creationDate = session.sessionCreated
+ const session = await db.collection("UserSessions").findOne({ _id: new ObjectID(id) })
 
  const currentDate = moment.utc()
 
- if (currentDate.diff(creationDate, 'hours') <= 24) {
-  res.status(200).json({ valid: true })
- } else if (!isNullOrUndefined(session)) {
-  db.collection(process.env.mongo_name).deleteOne({ _id: new ObjectID(id) })
+ if (isNullOrUndefined(session)) {
   res.status(200).json({ valid: false })
  } else {
-  res.status(200).json({ valid: false })
+  if (moment(currentDate).diff(moment(session.sessionCreated), 'hour', true) <= 24) {
+   res.status(200).json({ valid: true, userID: session.userID, sessionID: session._id })
+  } else {
+   db.collection("UserSessions").deleteOne({ _id: new ObjectID(id) })
+   res.status(200).json({ valid: false })
+  }
  }
 }
 
