@@ -29,7 +29,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, db: Db) => {
 
   res.status(201).json({ userID: user.ops[0]._id, sessionID: sessionID, userType: user.ops[0].role })
 
-  console.log({ user: user.ops[0]._id, session: sessionID })
  } else {
   var messages: Array<{ type: string, message: string }> = []
 
