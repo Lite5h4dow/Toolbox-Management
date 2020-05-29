@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../components/frontLayout"
 import { Container, Form, Segment, Header } from "semantic-ui-react";
-import { types } from "../classes/user";
+import { Roles } from "../classes/user";
 import axios from "axios"
 import router from "next/router";
 
@@ -17,11 +17,11 @@ const Register = (props) => {
     var user = new FormData(e.currentTarget)
 
     axios.post("/api/register", {
-      fname: user.get("fname"),
-      sname: user.get("sname"),
-      email: user.get("email"),
-      uname: user.get("uname"),
-      pword: user.get("pword"),
+      fname: user.get("fname").toString().toLowerCase().trim(),
+      sname: user.get("sname").toString().toLowerCase().trim(),
+      email: user.get("email").toString().toLowerCase().trim(),
+      uname: user.get("uname").toString().trim(),
+      pword: user.get("pword").toString().trim(),
       acctype: accType
     }).then(r => {
       if (r.status == 201) {
@@ -46,10 +46,11 @@ const Register = (props) => {
 
 
   if (options.length == 0) {
-    for (let v in types) {
-      if (typeof types[v] === 'number') {
-        if (parseInt(types[v]) > 0) {
-          options.push({ key: parseInt(types[v]), text: v, value: parseInt(types[v]) })
+    for (let v in Roles) {
+      if (typeof Roles[v] === 'number') {
+        if (parseInt(Roles[v]) > 0) {
+          const name = v.replace("_", " ")
+          options.push({ key: parseInt(Roles[v]), text: name, value: parseInt(Roles[v]) })
         }
       }
     }
