@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 import newSession from "../../lib/Server/newSession"
 import withMongo from "../../middleware/withMongo";
 import { isNullOrUndefined } from "util";
+import createGroup from "../../lib/Server/CreateGroup";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse, db: Db) => {
  const body = req.body
@@ -21,9 +22,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse, db: Db) => {
    password: passwordHash,
    forename: body.fname,
    surname: body.sname,
-   role: body.acctype,
+   access: body.access,
    verified: false
   })
+
+  if (body.createGroup) {
+   createGroup(db, body.groupName, user.ops[0]._id, body.groupType)
+  }
 
   const sessionID = await newSession(db, user.ops[0]._id)
 
